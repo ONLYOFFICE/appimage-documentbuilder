@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>documentbuilder</id>
+	<metadata_license>AGPL-3.0</metadata_license>
+	<project_license>AGPL-3.0</project_license>
+	<name>ONLYOFFICE Document Builder</name>
+	<summary>Build text, spreadsheet and presentation documents without editor</summary>
+	<description>
+		<p>ONLYOFFICE Document Builder allows you to build docs easily without running an actual edutor. It also allows the developers to automate document building using the templates. Document Builder has all the features of a common document editor but is lightweight and can be easily integrated into your document management system, CRM system, etc.</p>
+	</description>
+	<launchable type="desktop-id">onlyoffice-documentbuilder.desktop</launchable>
+	<url type="homepage">https://github.com/ONLYOFFICE/appimage-documentbuilder</url>
+	<provides>
+		<id>onlyoffice-documentbuilder.desktop</id>
+	</provides>
+</component>
