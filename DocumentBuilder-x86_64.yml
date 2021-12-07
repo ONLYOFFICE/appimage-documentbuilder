@@ -26,7 +26,7 @@ script:
   - mkdir -p ./usr/share/metainfo
   - cp ../../metainfo/documentbuilder.appdata.xml ./usr/share/metainfo
   - sed -i -e 's|DIR=/opt|DIR=$APPDIR/opt|g' usr/bin/documentbuilder
-  - sed -i -e 's|export LD_LIBRARY_PATH|export LD_LIBRARY_PATH=$APPDIR/usr/bin/:$DIR:$LD_LIBRARY_PATH|g' usr/bin/documentbuilder
+  - sed -i -e 's|export LD_LIBRARY_PATH|export LD_LIBRARY_PATH=$APPDIR/usr/bin/:$DIR:$LD_LIBRARY_PATH\ncd $OWD|g' usr/bin/documentbuilder
   - sed -i -e '/LD_LIBRARY_PATH=$DIR/d' usr/bin/documentbuilder
   - wget https://github.com/ONLYOFFICE/desktop-apps/raw/master/win-linux/package/linux/branding/common/opt/desktopeditors/asc-de-256.png -O asc-de.png
   - opt/onlyoffice/documentbuilder/docbuilder -v | head -n 1 | sed -r 's/v([0-9]+).([0-9]+).([0-9]+).([0-9]+)/\1.\2.\3/' > ../VERSION
