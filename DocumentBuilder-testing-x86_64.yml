@@ -1,0 +1,45 @@
+app: documentbuilder
+
+ingredients:
+  packages:
+    - libcurl3
+    - libcurl3-gnutls
+    - libxml2
+    - fonts-opensymbol
+    - fonts-dejavu
+    - fonts-liberation
+    - ttf-mscorefonts-installer
+    - fonts-crosextra-carlito
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  debs:
+    - ${DOCUMENTBUILDER_DEB_PATH}
+
+script:
+  - mkdir -p ./usr/share/applications
+  - cat > ./usr/share/applications/onlyoffice-documentbuilder.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=ONLYOFFICE Document Builder
+  - Type=Application
+  - Exec=documentbuilder %F
+  - Terminal=true
+  - Icon=asc-de
+  - Categories=Office;WordProcessor;Spreadsheet;Presentation;
+  - EOF
+  - cp ./usr/share/applications/onlyoffice-documentbuilder.desktop .
+  - mkdir -p ./usr/share/metainfo
+  - cp ../../metainfo/documentbuilder.appdata.xml ./usr/share/metainfo
+  - sed -i -e 's|DIR=/opt|TMP_DIR=/tmp/onlyoffice/documentbuilder\nDIR=$APPDIR/opt|g' usr/bin/documentbuilder
+  - sed -i -e 's|export LD_LIBRARY_PATH|export LD_LIBRARY_PATH=$APPDIR/usr/bin/:$DIR:$LD_LIBRARY_PATH\nexport CUSTOM_FONTS_PATH=$APPDIR/usr/share/fonts\ncd $OWD\nmkdir -p $TMP_DIR|g' usr/bin/documentbuilder
+  - sed -i -e '/LD_LIBRARY_PATH=$DIR/d' usr/bin/documentbuilder
+  - sed -i -e 's|exec ||g' usr/bin/documentbuilder
+  - sed -i -e 's|$@|"$@"\nrm -r $TMP_DIR|g' usr/bin/documentbuilder
+  - wget https://github.com/ONLYOFFICE/desktop-apps/raw/master/win-linux/package/linux/branding/common/opt/desktopeditors/asc-de-256.png -O asc-de.png
+  - opt/onlyoffice/documentbuilder/docbuilder -v | head -n 1 | sed -r 's/v([0-9]+).([0-9]+).([0-9]+).([0-9]+)/\1.\2.\3/' > ../VERSION
+  - rm opt/onlyoffice/documentbuilder/sdkjs/common/AllFonts.js
+  - rm opt/onlyoffice/documentbuilder/sdkjs/common/fonts.log
+  - rm opt/onlyoffice/documentbuilder/sdkjs/common/font_selection.bin
+  - ln -s /tmp/onlyoffice/documentbuilder/AllFonts.js opt/onlyoffice/documentbuilder/sdkjs/common/AllFonts.js
+  - ln -s /tmp/onlyoffice/documentbuilder/fonts.log opt/onlyoffice/documentbuilder/sdkjs/common/fonts.log
+  - ln -s /tmp/onlyoffice/documentbuilder/font_selection.bin opt/onlyoffice/documentbuilder/sdkjs/common/font_selection.bin
